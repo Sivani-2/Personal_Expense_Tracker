@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useCallback } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
 
@@ -6,45 +6,46 @@ const AdminPanel = () => {
   const { user } = useContext(AuthContext);
   const [users, setUsers] = useState([]);
   const [expenses, setExpenses] = useState([]);
-  useEffect(() => {
-    if (user && user.role === "admin") {
-      fetchUsers();
-      fetchExpenses();
-    }
-  }, [user]);
-  const fetchUsers = async () => {
-    console.log(user.token)
+
+  // ✅ Wrap fetchUsers in useCallback
+  const fetchUsers = useCallback(async () => {
+    if (!user?.token) return;
     try {
       const res = await axios.get(`https://personal-expense-tracker-4ud2.onrender.com/api/admin/users`, {
-        headers: { Authorization: `Bearer ${user.token}`},
+        headers: { Authorization: `Bearer ${user.token}` },
       });
       setUsers(res.data);
     } catch (err) {
       console.error("Error fetching users:", err);
     }
-  };
+  }, [user?.token]); // ✅ Add user.token as dependency
 
-  const fetchExpenses = async () => {
+  // ✅ Wrap fetchExpenses in useCallback
+  const fetchExpenses = useCallback(async () => {
+    if (!user?.token) return;
     try {
       const res = await axios.get(`https://personal-expense-tracker-4ud2.onrender.com/api/admin/expenses`, {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
+        headers: { Authorization: `Bearer ${user.token}` },
       });
       setExpenses(res.data);
     } catch (err) {
       console.error("Error fetching expenses:", err);
     }
-  };
+  }, [user?.token]); // ✅ Add user.token as dependency
+
+  useEffect(() => {
+    if (user && user.role === "admin") {
+      fetchUsers();
+      fetchExpenses();
+    }
+  }, [user, fetchUsers, fetchExpenses]); // ✅ Now includes functions in dependency array
 
   const deleteUser = async (id) => {
     try {
       await axios.delete(`https://personal-expense-tracker-4ud2.onrender.com/api/admin/users/${id}`, {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
+        headers: { Authorization: `Bearer ${user.token}` },
       });
-      setUsers(users.filter((user) => user._id !== id));
+      setUsers((prevUsers) => prevUsers.filter((u) => u._id !== id));
     } catch (err) {
       console.error("Error deleting user:", err);
     }
@@ -53,11 +54,9 @@ const AdminPanel = () => {
   const deleteExpense = async (id) => {
     try {
       await axios.delete(`https://personal-expense-tracker-4ud2.onrender.com/api/admin/expenses/${id}`, {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
+        headers: { Authorization: `Bearer ${user.token}` },
       });
-      setExpenses(expenses.filter((expense) => expense._id !== id));
+      setExpenses((prevExpenses) => prevExpenses.filter((e) => e._id !== id));
     } catch (err) {
       console.error("Error deleting expense:", err);
     }
