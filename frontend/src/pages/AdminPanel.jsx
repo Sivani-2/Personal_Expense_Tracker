@@ -15,7 +15,7 @@ const AdminPanel = () => {
   const fetchUsers = async () => {
     console.log(user.token)
     try {
-      const res = await axios.get(`http://localhost:8080/api/admin/users`, {
+      const res = await axios.get(`https://personal-expense-tracker-4ud2.onrender.com/api/admin/users`, {
         headers: { Authorization: `Bearer ${user.token}`},
       });
       setUsers(res.data);
@@ -26,7 +26,7 @@ const AdminPanel = () => {
 
   const fetchExpenses = async () => {
     try {
-      const res = await axios.get(`http://localhost:8080/api/admin/expenses`, {
+      const res = await axios.get(`https://personal-expense-tracker-4ud2.onrender.com/api/admin/expenses`, {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
@@ -39,7 +39,7 @@ const AdminPanel = () => {
 
   const deleteUser = async (id) => {
     try {
-      await axios.delete(`http://localhost:8080/api/admin/users/${id}`, {
+      await axios.delete(`https://personal-expense-tracker-4ud2.onrender.com/api/admin/users/${id}`, {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
@@ -52,7 +52,7 @@ const AdminPanel = () => {
 
   const deleteExpense = async (id) => {
     try {
-      await axios.delete(`http://localhost:8080/api/admin/expenses/${id}`, {
+      await axios.delete(`https://personal-expense-tracker-4ud2.onrender.com/api/admin/expenses/${id}`, {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },

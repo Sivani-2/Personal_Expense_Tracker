@@ -4,7 +4,7 @@ function ExpenseDetails({ incomeAmt, expenseAmt }) {
     const balance = Math.max(0, incomeAmt - expenseAmt);
 
     return (
-        <div style={{ padding: '20px', background: '#ffcccc', borderRadius: '10px', width: '50%', margin: 'auto' }}>
+        <div style={{ padding: '2-0px', background: '#ffcccc', borderRadius: '10px', width: '50%', margin: 'auto' }}>
             <div style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '15px', textAlign: 'center' }}>
                 Your Balance is ₹ {balance}
             </div>

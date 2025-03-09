@@ -110,7 +110,7 @@ function Expenses() {
 
     return (
         <div>
-            <div className='user-section'>
+            <div className='user-section' style={{ textAlign: 'center', marginBottom: '20px' }}>
                 <h1>Welcome {loggedInUser}</h1>
             </div>
 
