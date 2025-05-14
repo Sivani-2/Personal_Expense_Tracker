@@ -17,8 +17,12 @@ const UserSchema = new Schema({
     },
     role: {
         type: String,
-        enum: ["user", "admin"],  // Role added
+        enum: ["user", "admin"],
         default: "user"
+    },
+    income: {  
+        type: Number,
+        default: 0, 
     },
     expenses: [
         {
